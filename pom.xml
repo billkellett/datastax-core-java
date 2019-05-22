@@ -1,0 +1,106 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <url>http://maven.apache.org</url>  
+
+    <!-- above is all boilerplate
+        NOTE that I generated my base pom and project directory structure with the following maven command 
+		(do this from the directory ABOVE where you want the project to be created):
+        mvn archetype:generate -DgroupId=com.datastax.kellett -DartifactId=datastax-core-java -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+
+        The junit dependency was created automatically for me, but I pasted in the other dependencies below
+        and the other sections below:
+			<properties> 
+			<repositories> 
+			<build> NOTE that you must specify your <mainClass> here
+			
+        I did all the above BEFORE importing the project into IntelliJ.  I imported by pointing to the
+        cassandra-basic directory, and imported as Maven project.
+    -->
+  
+    <groupId>com.datastax.kellett</groupId>
+    <artifactId>datastax-core-java</artifactId>
+    <name>datastax-core-java</name>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <properties> <!-- These properties apply to DSE 6.0.5 -->
+        <dse.driver.version>1.6.9</dse.driver.version> <!-- From 6.0.5 release notes -->
+        <dse.version>6.0.5</dse.version> <!-- This is the DSE version I want to use -->
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+		
+        <dependency>
+            <groupId>com.datastax.dse</groupId>
+            <artifactId>dse-java-driver-core</artifactId>
+            <version>${dse.driver.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.datastax.dse</groupId>
+            <artifactId>dse-java-driver-mapping</artifactId>
+            <version>${dse.driver.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.datastax.dse</groupId>
+            <artifactId>dse-java-driver-extras</artifactId>
+            <version>${dse.driver.version}</version>
+        </dependency>		
+				
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>DataStax-Repo</id>
+            <url>https://repo.datastax.com/public-repos/</url>
+        </repository>
+    </repositories>
+
+	<!-- This build creates an executable jar in the package phase -->
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <archive>
+                                <manifest>
+                                    <mainClass>
+                                        com.datastax.kellett.Lab1
+                                    </mainClass>
+                                </manifest>
+                            </archive>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+	
+</project>
